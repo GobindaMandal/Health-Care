@@ -147,6 +147,13 @@ class HealthCareController extends Controller
             }
             $application->bubo = $bubo;
             $application->applicant_reason = $request->applicant_reason;
+
+            if($request->has('treatment_type')){
+                $application->application_type = $request->treatment_type;
+            }elseif($request->has('help_type')){
+                $application->application_type = $request->help_type;
+            }
+
             $application->relation_name = $request->relation_name;
             $application->employee_sign = $request->employee_sign;
             $application->employee_date = $request->employee_date;

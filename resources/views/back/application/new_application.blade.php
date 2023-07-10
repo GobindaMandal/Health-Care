@@ -228,7 +228,7 @@
                                     <label for="text" class="font-weight-bold">বিউবো এর পরিচয়পত্রের কপি :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <input type="file" class="form-control" name="bubo" id="bubo" placeholder="পিউবো এর পরিচয়পত্রের কপি" value="">
+                                    <input type="file" class="form-control" name="bubo" id="bubo" value="">
                                     <span class="text-danger">
                                         @error('bubo')
                                             {{ $message }}

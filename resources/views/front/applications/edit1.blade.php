@@ -19,7 +19,7 @@
                                     <label for="text" class="fw-bold">আবেদনের তারিখ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->applicant_date }}</span>
+                                    <input readonly type="date" class="form-control" name="applicant_date" id="applicant_date" value="{{ $applications->applicant_date }}">
                                 </div>
                             </div>
                         </div>
@@ -30,7 +30,7 @@
                                     <label for="text" class="fw-bold">অর্থ-বছর :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->fiscal_year }}</span>
+                                    <input readonly type="text" class="form-control" name="fiscal_year" id="fiscal_year" placeholder="অর্থ বছর" value="{{ $applications->fiscal_year }}">
                                 </div>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                                     <label for="text" class="fw-bold">অফিসের নাম :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->office_name }}</span>
+                                    <input readonly type="text" class="form-control" name="office_name" id="office_name" placeholder="অফিসের নাম" value="{{ $applications->office_name }}">
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                     <label for="text" class="fw-bold">কর্মকর্তা/ কর্মচারীর নাম :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->employee_name }}</span>
+                                    <input readonly type="text" class="form-control" name="employee_name" id="employee_name" placeholder="কর্মকর্তা/ কর্মচারীর নাম" value="{{ $applications->employee_name }}">
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                                     <label for="text" class="fw-bold">ই আর পি নম্বর :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->ERP_number }}</span>
+                                    <input readonly type="text" class="form-control" name="ERP_number" id="ERP_number" placeholder="ই আর পি নম্বর" value="{{ $applications->ERP_number }}">
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                                     <label for="text" class="fw-bold">পদবী :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->designation }}</span>
+                                    <input readonly type="text" class="form-control" name="designation" id="designation" placeholder="পদবী" value="{{ $applications->designation }}">
                                 </div>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                                     <label for="text" class="fw-bold">যোগদানের তারিখ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->joining_date }}</span>
+                                    <input readonly type="date" class="form-control" name="joining_date" id="joining_date" value="{{ $applications->joining_date }}">
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                     <label for="text" class="fw-bold">গ্রেড :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->grade }}</span>
+                                    <input readonly type="text" class="form-control" name="grade" id="grade" placeholder="গ্রেড" value="{{ $applications->grade }}">
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                                     <label for="text" class="fw-bold">মোবাইল নং :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->number }}</span>
+                                    <input readonly type="number" class="form-control" name="number" id="number" placeholder="মোবাইল নং" value="{{ $applications->number }}">
                                 </div>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                     <label for="text" class="fw-bold">ইমেইল :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->email }}</span>
+                                    <input readonly type="email" class="form-control" name="email" id="email" placeholder="ইমেইল" value="{{ $applications->email }}">
                                 </div>
                             </div>
                         </div>
@@ -167,7 +167,9 @@
                                     <label for="text" class="fw-bold">আবেদনের খাত :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->applicant_reason }}</span>
+                                    <select readonly class="form-select" name="applicant_reason" id="applicant_reason">
+                                       <option value="">{{ $applications->applicant_reason }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +180,9 @@
                                     <label for="text" class="fw-bold">সম্পর্ক :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $applications->relation_name }}</span>
+                                    <select readonly class="form-select" name="relation_name" id="relation_name">
+                                       <option value="">{{ $applications->relation_name }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -192,17 +196,17 @@
                                     <label for="text" class="fw-bold">আবেদনের ধরণ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
+                                    <select readonly class="form-select" name="help_type" id="help_type">
+                                       @if(App\Models\Back\Daughter_Marriage::where('application_id', $applications->id)->first())
+                                       <option value=" {{ App\Models\Back\Daughter_Marriage::where('application_id', $applications->id)->first('help_type')}}"> {{App\Models\Back\Daughter_Marriage::where('application_id', $applications->id)->first()->help_type}}</option>
 
-                                    @if(App\Models\Back\Daughter_Marriage::where('application_id', $applications->id)->first())
-                                    <span>{{ App\Models\Back\Daughter_Marriage::where('application_id', $applications->id)->first('help_type')}}</span>
+                                       @elseif( App\Models\Back\Meritocracy::where('application_id', $applications->id)->first())
+                                       <option value=" {{ App\Models\Back\Meritocracy::where('application_id', $applications->id)->first('help_type')}}"> {{App\Models\Back\Meritocracy::where('application_id', $applications->id)->first()->help_type}}</option>
 
-                                    @elseif( App\Models\Back\Meritocracy::where('application_id', $applications->id)->first())
-                                    <span>{{App\Models\Back\Meritocracy::where('application_id', $applications->id)->first()->help_type}}</span>
-
-                                    @elseif( App\Models\Back\Deadbody::where('application_id', $applications->id)->first())
-                                    <span>{{ App\Models\Back\Deadbody::where('application_id', $applications->id)->first('help_type')}}</span>
-                                    @endif
-                                    
+                                       @elseif( App\Models\Back\Deadbody::where('application_id', $applications->id)->first())
+                                       <option value=" {{ App\Models\Back\Deadbody::where('application_id', $applications->id)->first('help_type')}}"> {{App\Models\Back\Deadbody::where('application_id', $applications->id)->first()->help_type}}</option>
+                                       @endif
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +222,9 @@
                                     <label for="text" class="fw-bold">চিকিৎসার ধরণ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->treatment_type }}</span>
+                                    <select readonly class="form-select" name="treatment_type" id="treatment_type">
+                                        <option value="">{{ $application->treatment_type }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -229,7 +235,7 @@
                                     <label for="text" class="fw-bold">রোগীর নাম :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->patient_name }}</span>
+                                    <input readonly type="text" class="form-control" name="patient_name" id="patient_name" placeholder="রোগীর নাম" value="{{ $application->patient_name }}">
                                 </div>
                             </div>
                         </div>
@@ -274,7 +280,9 @@
                                     <label for="text" class="fw-bold">সন্তানের ক্রমিক নং :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->child_birth }}</span>
+                                    <select readonly class="form-select" name="child_birth" id="child_birth">
+                                        <option value="">{{ $application->child_birth }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -308,7 +316,7 @@
                                     <label for="text" class="fw-bold">বিবাহের তারিখ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->marriage_date }}</span>
+                                    <input readonly class="form-control" type="date" id="marriage_date" name="marriage_date" value="{{ $application->marriage_date }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -370,7 +378,7 @@
                                     <label for="text" class="fw-bold">শ্রেণী :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->class }}</span>
+                                    <input readonly class="form-control" type="text" id="class" name="class" placeholder="শ্রেণী" value="{{ $application->class }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -378,7 +386,7 @@
                                     <label for="text" class="fw-bold">পরীক্ষা :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->exam }}</span>
+                                    <input readonly class="form-control" type="text" id="exam" name="exam" placeholder="পরীক্ষা" value="{{ $application->exam }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -386,7 +394,7 @@
                                     <label for="text" class="fw-bold">ফলাফল :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->result }}</span>
+                                    <input readonly class="form-control" type="text" id="result" name="result" placeholder="ফলাফল" value="{{ $application->result }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -478,7 +486,7 @@
                                     <label for="text" class="fw-bold">ডেথ সার্টিফিকেট ইস্যুর তারিখ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->death_date }}</span>
+                                    <input readonly class="form-control" type="date" id="death_date" name="death_date" value="{{ $application->death_date }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -486,7 +494,7 @@
                                     <label for="text" class="fw-bold">সার্টিফিকেট ইস্যুকারী প্রতিষ্ঠান :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->death_institute }}</span>
+                                    <input readonly class="form-control" type="text" id="death_institute" name="death_institute" placeholder="সার্টিফিকেট ইস্যুকারী প্রতিষ্ঠান" value="{{ $application->death_institute }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -547,7 +555,7 @@
                                     <label for="text" class="fw-bold">রোগের বিবরণ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->disease_name }}</span>
+                                    <textarea readonly class="form-control" name="disease_name" id="disease_name" cols="40" rows="2" placeholder="রোগের বিবরণ">{{ $application->disease_name }}</textarea>
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -555,7 +563,7 @@
                                     <label for="text" class="fw-bold">হাসপাতালের নাম :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->hospital_name }}</span>
+                                    <input readonly class="form-control" type="text" id="hospital_name" name="hospital_name" placeholder="হাসপাতালের নাম" value="{{ $application->hospital_name }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -563,7 +571,7 @@
                                     <label for="text" class="fw-bold">হাসপাতাল হতে ছাড়পত্রের তারিখ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->clearance_date }}</span>
+                                    <input readonly class="form-control" type="date" id="clearance_date" name="clearance_date" value="{{ $application->clearance_date }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -571,7 +579,7 @@
                                     <label for="text" class="fw-bold">ছাড়পত্র ইস্যুকারী হাসপাতালের নাম :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->clearance_hospital_name }}</span>
+                                    <input readonly class="form-control" type="text" id="clearance_hospital_name" name="clearance_hospital_name" placeholder="ছাড়পত্র ইস্যুকারী হাসপাতালের নাম" value="{{ $application->clearance_hospital_name }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -627,7 +635,7 @@
                                     <label for="text" class="fw-bold">দূর্ঘটনার বিবরণ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->accident_name }}</span>
+                                    <textarea readonly class="form-control" name="accident_name" id="accident_name" cols="40" rows="2" placeholder="দূর্ঘটনার বিবরণ">{{ $application->accident_name }}</textarea>
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -635,7 +643,7 @@
                                     <label for="text" class="fw-bold">দূর্ঘটনার তারিখ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->accident_date }}</span>
+                                    <input readonly class="form-control" type="date" id="accident_date" name="accident_date" placeholder="দূর্ঘটনার তারিখ" value="{{ $application->accident_date }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -643,7 +651,7 @@
                                     <label for="text" class="fw-bold">দূর্ঘটনার স্থান :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->accident_place }}</span>
+                                    <input readonly class="form-control" type="text" id="accident_place" name="accident_place" placeholder="দূর্ঘটনার স্থান" value="{{ $application->accident_place }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -669,7 +677,7 @@
                                     <label for="text" class="fw-bold">১ম সন্তানের জন্মতারিখ :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <span>{{ $application->child_birthdate }}</span>
+                                    <input readonly class="form-control" type="date" id="child_birthdate" name="child_birthdate" value="{{ $application->child_birthdate }}">
                                 </div>
                             </div>
                             <div class="row m-3">
@@ -677,9 +685,7 @@
                                     <label for="text" class="fw-bold">দপ্তর প্রধানের প্রত্যায়নপত্র :</label>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
-                                    <a href="{{ asset('back/childbirth/'.$application->headofc_affidavit) }}" data-lightbox="image">
-                                        <img src="{{ asset('back/childbirth/'.$application->headofc_affidavit) }}" alt="" width="50" />
-                                    </a>
+                                    <input readonly class="form-control" type="file" id="headofc_affidavit" name="headofc_affidavit" placeholder="দপ্তর প্রধানের প্রত্যায়নপত্র">
                                 </div>
                             </div>
                         </div>
@@ -697,41 +703,46 @@
                                 <table id="orders" class="table table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th class="align-middle text-center">ক্রমিক নং</th>
-                                            <th class="align-middle text-center">ভাউচার নং</th>
-                                            <th class="align-middle text-center">তারিখ</th>
-                                            <th class="align-middle text-center">টাকার পরিমাণ</th>
-                                            <th class="align-middle text-center">সংযুক্ত ফাইল</th>
+                                            <th style="color: black;">ক্রমিক নং</th>
+                                            <th style="color: black;">ভাউচার নং</th>
+                                            <th style="color: black;">তারিখ</th>
+                                            <th style="color: black;">টাকার পরিমাণ</th>
+                                            <th style="color: black;">সংযুক্ত ফাইল</th>
                                     </thead>
-                                    <tbody>
+                                    <tbody style="background-color: f4f4f4;">
 
                                         @foreach($applications2 as $application)
                                         <tr id="row">
                                             
-                                            <td class="align-middle text-center" style="width: 50px;">
-                                                <span>{{ $application->sl_no }}</span>
+                                            <td>
+                                                <input readonly class="form-control sl_no" type='number' data-type="sl_no" id='sl_no[]' name='sl_no[]' placeholder='ক্রমিক নং' value="{{ $application->sl_no }}" />
                                             </td>
     
-                                            <td class="align-middle text-center">
-                                                <span>{{ $application->voucher_no }}</span>
+                                            <td>
+                                                <input readonly class="form-control voucher_no" type='text' data-type="voucher_no" id='voucher_no[]' name='voucher_no[]' placeholder='ভাউচার নং' value="{{ $application->voucher_no }}" />
                                             </td>
     
-                                            <td class="align-middle text-center">
-                                                <span>{{ $application->date }}</span>
+                                            <td>
+                                                <input readonly class="form-control date" type='date' data-type="date" id='date[]' name='date[]' placeholder='তারিখ' value="{{ $application->date }}" />
                                             </td>
     
-                                            <td class="align-middle text-center">
-                                                <span>{{ $application->amount }}</span>
+                                            <td>
+                                                <input readonly class="form-control amount" type='number' data-type="amount" id='amount[]' name='amount[]' placeholder='টাকার পরিমাণ' value="{{ $application->amount }}" />
                                             </td>
     
-                                            <td class="align-middle text-center">
+                                            <td>
                                                 <a href="{{ asset('back/file/'.$application->file) }}" data-lightbox="image">
-                                                    <img src="{{ asset('back/file/'.$application->file) }}" alt="" width="50" style="display: block; margin: auto;" />
+                                                    <img src="{{ asset('back/file/'.$application->file) }}" alt="" width="50" />
                                                 </a>
                                             </td>
     
                                         </tr>
                                         @endforeach
+
+                                        <!-- <tr id="totalRow">
+                                            <td colspan="3" class="text-right"> Total:</td>
+                                            <td id="totalAmount" class="text-right"></td>
+                                        </tr> -->
 
                                     </tbody>
                                     
@@ -756,18 +767,18 @@
                                         <label for="text" class="text-center fw-bold">কর্মকর্তা/ কর্মচারীর সাক্ষর :</label>
                                     </div>
                                     <div class="col-lg-7 col-md-7 col-sm-12">
-                                        <span>{{ $applications->employee_sign }}</span>
+                                        <input readonly type="text" class="form-control" name="employee_sign" id="employee_sign" placeholder="কর্মকর্তা/ কর্মচারীর সাক্ষর" value="{{ $applications->employee_sign }}">
                                     </div>
                                 </div>
                             </div>
     
                             <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="row">
+                                <div class="row m-3">
                                     <div class="col-lg-4 col-md-4 col-sm-12">
                                         <label for="text" class="text-center fw-bold">তারিখ :</label>
                                     </div>
                                     <div class="col-lg-7 col-md-7 col-sm-12">
-                                        <span>{{ $applications->employee_date }}</span>
+                                        <input readonly type="date" class="form-control no-border" name="employee_date" id="employee_date" placeholder="তারিখ" value="{{ $applications->employee_date }}">
                                     </div>
                                 </div>
                             </div>
@@ -778,7 +789,7 @@
 
 
                     <div class="col text-center">
-                        <button type="submit" class="btn btn-success m-3">Approve</button>
+                        <button type="submit" class="btn btn-success m-3">Accept</button>
 
                         <!-- <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{$applications->id}}">Reject</button> -->
                     </div>
@@ -816,9 +827,12 @@
                 <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12">
                     <div class="card">
                         <header>
+                            <!-- <h3 style="text-align: center;margin-top: 20px;">বাংলাদেশ বিদ্যুৎ উন্নয়ন বোর্ড </h3>
+                            <h4 style="text-align: center;margin-top: 20px;"> চিকিৎসা প্রতিপূরণ "বিল ফরম-৭" </h4> -->
                             <div class="table2">
                                 <h4 style="text-align: center; margin-top: 20px;">কল্যাণ তহবিল হতে অনুদান প্রাপ্তির আবেদন (নমুনা ছক 'ঘ')</h4>
                             </div>
+            
                         </header>
 
 

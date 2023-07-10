@@ -3,11 +3,11 @@
       <div class="container mx-auto px-6 py-2">
 
         <div class="p-3 bg-white shadow-md rounded my-6">
-          <form action="{{ route('filter.committeesApplication') }}" method="GET">
+          <form action="{{ route('filter.managementsApplication') }}" method="GET">
             <div class="row mb-3">
               <div class="col-md-2">
                 <label class="pb-1 text-sm font-bold" for="">ই আর পি নম্বর :</label>
-                <input type="number" class="form-control form-control-sm text-sm" name="ERP_number" id="ERP_number" placeholder="ই আর পি নম্বর">
+                <input type="number" class="form-control form-control-sm text-sm" name="ERP_number" id="ERP_number" placeholder="ই আর পি নম্বর" value="{{ request('ERP_number') }}">
               </div>
 
               <div class="col-md-2">
@@ -15,7 +15,7 @@
                 <select class="form-control form-control-sm text-sm" name="applicant_reason" id="applicant_reason">
                   <option value="">---আবেদনের খাত---</option>
                   @foreach($applicant_reason as $applicant_reason)
-                  <option value="{{ $applicant_reason->applicant_reason }}">{{ $applicant_reason->applicant_reason }}</option>
+                  <option value="{{ $applicant_reason->applicant_reason }}" @if(request()->input('applicant_reason') == $applicant_reason->applicant_reason) selected @endif>{{ $applicant_reason->applicant_reason }}</option>
                   @endforeach
                 </select>
               </div>
@@ -25,7 +25,7 @@
                 <select class="form-control form-control-sm text-sm" name="help_type" id="help_type">
                   <option value="">---সাহায্যের ধরণ---</option>
                   @foreach($help_type as $help_type)
-                  <option value="{{ $help_type->help_name }}">{{ $help_type->help_name }}</option>
+                  <option value="{{ $help_type->help_name }}" @if(request()->input('help_type') == $help_type->help_name) selected @endif>{{ $help_type->help_name }}</option>
                   @endforeach
                 </select>
               </div>
@@ -35,7 +35,7 @@
                 <select class="form-control form-control-sm text-sm" name="treatment_type" id="treatment_type">
                   <option value="">---চিকিৎসার ধরণ---</option>
                   @foreach($treatment_type as $treatment_type)
-                  <option value="{{ $treatment_type->treatment_name }}">{{ $treatment_type->treatment_name }}</option>
+                  <option value="{{ $treatment_type->treatment_name }}" @if(request()->input('treatment_type') == $treatment_type->treatment_name) selected @endif>{{ $treatment_type->treatment_name }}</option>
                   @endforeach
                 </select>
               </div>
@@ -59,7 +59,7 @@
                   @endfor
                 </select>
               </div>
-
+              
               <div class="col-md-1">
                 <label class="pb-1 text-sm" for=""></label>
                 <button id="filterBtn" class="btn btn-primary btn-sm form-control form-control-sm text-sm">Filter</button>
@@ -78,12 +78,13 @@
                 <th class="align-middle text-center text-sm">আবেদনের খাত</th>
                 <th class="align-middle text-center text-sm">আবেদনের ধরণ</th>
                 <th class="align-middle text-center text-sm">দাবিকৃত অনুদানের পরিমান</th>
+                <th class="align-middle text-center text-sm">অনুমোদিত অনুদানের পরিমান</th>
                 <th class="align-middle text-center text-sm">স্ট্যাটাস</th>
                 <th class="align-middle text-center text-sm">অ্যাকশন</th>
               </tr>
             </thead>
             <tbody>
-              @can('Committees application access')
+              @can('Managements application access')
                 <?php $sl=1; ?>
                 @foreach($reports as $report)
                 <tr>
@@ -106,18 +107,17 @@
                   @foreach($report->deadbody as $deadbody)
                   <td class="align-middle text-center text-sm">{{ $deadbody->amount }}</td>
                   @endforeach
+                  <td class="align-middle text-center text-sm">{{ $report->approved_amount }}</td>
                   <td class="align-middle text-center text-sm">
-                      @if($report->status=='controller_approved')
+                      @if($report->status=='committee_approved')
                       <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-gray-500 rounded-full">Draft</span>
-                      @elseif($report->status=='committee_rejected')
-                      <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-red-500 rounded-full">Rejected</span>
                       @else
                       <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-green-500 rounded-full">Approved</span>
                       @endif
                   </td>
                   <td class="align-middle text-center text-sm">
-                    @can('Committees application edit')
-                    <a href="{{route('viewReport.committeesApplication',$report->id)}}" class="ml-2"><i class="fa-sharp fa-regular fa-eye"></i></a>
+                    @can('Managements application edit')
+                    <a href="{{route('viewReport.managementsApplication',$report->id)}}" class="ml-2"><i class="fa-sharp fa-regular fa-eye"></i></a>
                     @endcan
                   </td>
                 </tr>
@@ -135,24 +135,86 @@
 <!-- filter -->
 <script>
   $(document).ready(function() {
-    $('#applicant_reason').change(function() {
-      var selectedValue = $(this).val();
-      
-      if (selectedValue === 'কল্যাণ ও চিত্তবিনোদন') {
-        $('#help_type_container').show();
-      } else {
-        $('#help_type_container').hide();
-      }
+    // Get the initial selected values
+    var selectedApplicationType = $('#applicant_reason').val();
+    var selectedHelpType = $('#help_type').val();
+    var selectedTreatmentType = $('#treatment_type').val();
 
-      if (selectedValue === 'চিকিৎসা') {
+    // Show/hide the div containers based on the initial selected values
+    handleDivVisibility(selectedApplicationType, selectedHelpType, selectedTreatmentType);
+
+    // Event listener for the applicant_reason dropdown
+    $('#applicant_reason').change(function() {
+      var selectedApplicationType = $(this).val();
+      handleDivVisibility(selectedApplicationType, selectedHelpType, selectedTreatmentType);
+    });
+
+    // Event listener for the help_type dropdown
+    $('#help_type').change(function() {
+      selectedHelpType = $(this).val();
+      handleDivVisibility(selectedApplicationType, selectedHelpType, selectedTreatmentType);
+    });
+
+    // Event listener for the treatment_type dropdown
+    $('#treatment_type').change(function() {
+      selectedTreatmentType = $(this).val();
+      handleDivVisibility(selectedApplicationType, selectedHelpType, selectedTreatmentType);
+    });
+
+    function handleDivVisibility(applicationType, helpType, treatmentType) {
+      if (applicationType === 'কল্যাণ ও চিত্তবিনোদন') {
+        $('#help_type_container').show();
+        $('#treatment_type_container').hide();
+      } else if (applicationType === 'চিকিৎসা') {
+        $('#help_type_container').hide();
         $('#treatment_type_container').show();
       } else {
+        $('#help_type_container').hide();
         $('#treatment_type_container').hide();
       }
-
-    });
+    }
   });
 </script>
+
+
+<!-- for showing field -->
+<script>
+  // Get the selected values on page load
+  var selectedHelpType = document.getElementById('help_type').value;
+  var selectedTreatmentType = document.getElementById('treatment_type').value;
+
+  // Show/hide the div containers based on the selected values
+  if (selectedHelpType !== '') {
+    document.getElementById('help_type_container').style.display = 'block';
+  } else if (selectedTreatmentType !== '') {
+    document.getElementById('treatment_type_container').style.display = 'block';
+  }
+
+  // Event listener for the help_type dropdown
+  document.getElementById('help_type').addEventListener('change', function() {
+    var selectedValue = this.value;
+    if (selectedValue !== '') {
+      document.getElementById('help_type_container').style.display = 'block';
+      document.getElementById('treatment_type_container').style.display = 'none';
+    } else {
+      document.getElementById('help_type_container').style.display = 'none';
+      document.getElementById('treatment_type_container').style.display = 'block';
+    }
+  });
+
+  // Event listener for the treatment_type dropdown
+  document.getElementById('treatment_type').addEventListener('change', function() {
+    var selectedValue = this.value;
+    if (selectedValue !== '') {
+      document.getElementById('treatment_type_container').style.display = 'block';
+      document.getElementById('help_type_container').style.display = 'none';
+    } else {
+      document.getElementById('treatment_type_container').style.display = 'none';
+      document.getElementById('help_type_container').style.display = 'block';
+    }
+  });
+</script>
+
 
 <!-- checkbox -->
 <script>

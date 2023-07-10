@@ -12,10 +12,30 @@
 
               <div class="col-md-2">
                 <label class="pb-1 text-sm font-bold" for="">আবেদনের খাত :</label>
-                <select class="form-control form-control-sm text-sm" name="application_type" id="application_type">
+                <select class="form-control form-control-sm text-sm" name="applicant_reason" id="applicant_reason">
                   <option value="">---আবেদনের খাত---</option>
-                  @foreach($applicant_reason as $application_type)
-                  <option value="{{ $application_type->applicant_reason }}" @if(request()->input('application_type') == $application_type->applicant_reason) selected @endif>{{ $application_type->applicant_reason }}</option>
+                  @foreach($applicant_reason as $applicant_reason)
+                  <option value="{{ $applicant_reason->applicant_reason }}" @if(request()->input('applicant_reason') == $applicant_reason->applicant_reason) selected @endif>{{ $applicant_reason->applicant_reason }}</option>
+                  @endforeach
+                </select>
+              </div>
+
+              <div class="col-md-2" id="help_type_container" style="display: none;">
+                <label class="pb-1 text-sm font-bold" for="">আবেদনের ধরণ :</label>
+                <select class="form-control form-control-sm text-sm" name="help_type" id="help_type">
+                  <option value="">---সাহায্যের ধরণ---</option>
+                  @foreach($help_type as $help_type)
+                  <option value="{{ $help_type->help_name }}" @if(request()->input('help_type') == $help_type->help_name) selected @endif>{{ $help_type->help_name }}</option>
+                  @endforeach
+                </select>
+              </div>
+
+              <div class="col-md-2" id="treatment_type_container" style="display: none;">
+                <label class="pb-1 text-sm font-bold" for="">আবেদনের ধরণ :</label>
+                <select class="form-control form-control-sm text-sm" name="treatment_type" id="treatment_type">
+                  <option value="">---চিকিৎসার ধরণ---</option>
+                  @foreach($treatment_type as $treatment_type)
+                  <option value="{{ $treatment_type->treatment_name }}" @if(request()->input('treatment_type') == $treatment_type->treatment_name) selected @endif>{{ $treatment_type->treatment_name }}</option>
                   @endforeach
                 </select>
               </div>
@@ -73,24 +93,19 @@
                   <td class="align-middle text-center text-sm">{{ $report->ERP_number }}</td>
                   <td class="align-middle text-center text-sm">{{ $report->relation_name }}</td>
                   <td class="align-middle text-center text-sm">{{ $report->applicant_reason }}</td>
-                  @foreach($report->patientForm as $patientForm)
-                  <td class="align-middle text-center text-sm">{{ $patientForm->treatment_type }}</td>
-                  @endforeach
+                  <td class="align-middle text-center text-sm">{{ $report->application_type }}</td>
+                  @if(isset($report->claim_amount))
+                  <td class="align-middle text-center text-sm">{{ $report->claim_amount }}</td>
+                  @endif
                   @foreach($report->daughterMarriage as $daughterMarriage)
-                  <td class="align-middle text-center text-sm">{{ $daughterMarriage->help_type }}</td>
                   <td class="align-middle text-center text-sm">{{ $daughterMarriage->amount }}</td>
                   @endforeach
                   @foreach($report->meritocracy as $meritocracy)
-                  <td class="align-middle text-center text-sm">{{ $meritocracy->help_type }}</td>
                   <td class="align-middle text-center text-sm">{{ $meritocracy->amount }}</td>
                   @endforeach
                   @foreach($report->deadbody as $deadbody)
-                  <td class="align-middle text-center text-sm">{{ $deadbody->help_type }}</td>
                   <td class="align-middle text-center text-sm">{{ $deadbody->amount }}</td>
                   @endforeach
-                  @if(!$report->healthIssue->isEmpty())
-                  <td class="align-middle text-center text-sm">{{ $report->healthIssue->sum('amount') }}</td>
-                  @endif
                   <td class="align-middle text-center text-sm">
                       @if($report->status=='admin_approved')
                       <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-gray-500 rounded-full">Draft</span>
@@ -121,15 +136,15 @@
 <script>
   $(document).ready(function() {
     // Get the initial selected values
-    var selectedApplicationType = $('#application_type').val();
+    var selectedApplicationType = $('#applicant_reason').val();
     var selectedHelpType = $('#help_type').val();
     var selectedTreatmentType = $('#treatment_type').val();
 
     // Show/hide the div containers based on the initial selected values
     handleDivVisibility(selectedApplicationType, selectedHelpType, selectedTreatmentType);
 
-    // Event listener for the application_type dropdown
-    $('#application_type').change(function() {
+    // Event listener for the applicant_reason dropdown
+    $('#applicant_reason').change(function() {
       var selectedApplicationType = $(this).val();
       handleDivVisibility(selectedApplicationType, selectedHelpType, selectedTreatmentType);
     });

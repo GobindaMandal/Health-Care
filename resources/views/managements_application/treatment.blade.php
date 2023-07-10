@@ -7,10 +7,10 @@
             <div class="row mb-3">
               <div class="col-md-3">
                 <label class="pb-1 text-sm font-bold" for="">আবেদন-সমূহ :</label>
-                <select class="form-control form-control-sm text-sm" name="application_type" id="application_type">
+                <select class="form-control form-control-sm text-sm" name="applicant_reason" id="applicant_reason">
                   <option value="">-----আবেদন নির্বাচন করুন-----</option>
-                  @foreach($applicant_reason as $application_type)
-                  <option value="{{ $application_type->applicant_reason }}">{{ $application_type->applicant_reason }}</option>
+                  @foreach($applicant_reasons as $applicant_reason)
+                  <option value="{{ $applicant_reason->applicant_reason }}" {{ request('applicant_reason') == $applicant_reason->applicant_reason ? 'selected' : '' }}>{{ $applicant_reason->applicant_reason }}</option>
                   @endforeach
                 </select>
               </div>
@@ -35,6 +35,7 @@
                   <th class="align-middle text-center text-sm">দাখিলকৃত ও পরীক্ষান্তে বিলের পরিমাণ</th>
                   <th class="align-middle text-center text-sm">অনুমোদিত অনুদানের পরিমান</th>
                   <th class="align-middle text-center text-sm">সুপারিশকৃত অনুদানের পরিমান</th>
+                  <th class="align-middle text-center text-sm">স্ট্যাটাস</th>
                   <th class="align-middle text-center text-sm w-2/12">অ্যাকশন</th>
                 </tr>
               </thead>
@@ -60,7 +61,14 @@
                     <td class="align-middle text-center text-sm">
                         <input class="text-sm form-control" type="number" id="allowed_amount" name="allowed_amount[{{ $loop->index }}]" placeholder="amount" value="{{ $application->allowed_amount }}" oninput="toggleApprovedAmount(this)" @if($application->allowed_amount) readonly @endif>
                     </td>
-
+                    
+                    <td class="align-middle text-center text-sm">
+                      @if($application->status=='committee_approved')
+                      <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-gray-500 rounded-full">Draft</span>
+                      @else
+                      <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-green-500 rounded-full">Approved</span>
+                      @endif
+                    </td>
                     <td class="align-middle text-center text-sm">
                       <button type="submit" class="btn btn-primary btn-sm mr-2">Save</button>
                       @can('Managements application edit')

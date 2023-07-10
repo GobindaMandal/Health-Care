@@ -28,6 +28,7 @@ class CreateApplicationFormsTable extends Migration
             $table->string("email");
             $table->string("bubo");
             $table->string("applicant_reason");
+            $table->string("application_type");
             $table->string("relation_name");
             $table->string("employee_sign")->nullable();
             $table->date("employee_date")->nullable();

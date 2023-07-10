@@ -191,20 +191,23 @@ class CommitteeController extends Controller
         $yearRange = explode('-', $year);
         $startDate = $yearRange[0].'-07-01';
         $endDate = $yearRange[1].'-06-30';
-        // $fiscalYearTransactions = Archive::whereBetween('office_order_date', [$startDate, $endDate])->get();
 
         if(!empty($request->ERP_number)){
             $reports1->where('ERP_number', $request->input('ERP_number'));
         }
-        if(!empty($request->application_type)){
-            $reports1->where('applicant_reason', $request->input('application_type'));
+        if(!empty($request->applicant_reason)){
+            $reports1->where('applicant_reason', $request->input('applicant_reason'));
         }
         if(!empty($request->help_type)){
-            $reports1->where('applicant_type', $request->input('help_type'));
+            $reports1->where('application_type', $request->input('help_type'));
+        }
+        if(!empty($request->treatment_type)){
+            $reports1->where('application_type', $request->input('treatment_type'));
         }
         if(!empty($request->year)){
             $reports1->whereBetween('created_at', [$startDate, $endDate]);
         }
+        
         $reports = $reports1->where('status', '!=', 'draft')
         ->where('status', '!=', 'admin_approved')
         ->where('status', '!=', 'doctor_approved')

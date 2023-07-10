@@ -32,24 +32,19 @@
                   <td class="align-middle text-center text-sm">{{ $application->employee_name }}</td>
                   <td class="align-middle text-center text-sm">{{ $application->ERP_number }}</td>
                   <td class="align-middle text-center text-sm">{{ $application->applicant_reason }}</td>
-                  @foreach($application->patientForm as $patientForm)
-                  <td class="align-middle text-center text-sm">{{ $patientForm->treatment_type }}</td>
-                  @endforeach
+                  <td class="align-middle text-center text-sm">{{ $application->application_type }}</td>
+                  @if(isset($application->claim_amount))
+                  <td class="align-middle text-center text-sm">{{ $application->claim_amount }}</td>
+                  @endif
                   @foreach($application->daughterMarriage as $daughterMarriage)
-                  <td class="align-middle text-center text-sm">{{ $daughterMarriage->help_type }}</td>
                   <td class="align-middle text-center text-sm">{{ $daughterMarriage->amount }}</td>
                   @endforeach
                   @foreach($application->meritocracy as $meritocracy)
-                  <td class="align-middle text-center text-sm">{{ $meritocracy->help_type }}</td>
                   <td class="align-middle text-center text-sm">{{ $meritocracy->amount }}</td>
                   @endforeach
                   @foreach($application->deadbody as $deadbody)
-                  <td class="align-middle text-center text-sm">{{ $deadbody->help_type }}</td>
                   <td class="align-middle text-center text-sm">{{ $deadbody->amount }}</td>
                   @endforeach
-                  @if(!$application->healthIssue->isEmpty())
-                  <td class="align-middle text-center text-sm">{{ $application->healthIssue->sum('amount') }}</td>
-                  @endif
                   <td class="align-middle text-center text-sm">
                     @if($application->status=='approved')
                     <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-green-500 rounded-full">Approved</span>

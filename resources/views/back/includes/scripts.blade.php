@@ -91,8 +91,8 @@
                     total += amount;
                 }
             });
-            var integerTotal = parseInt(total);
-            $('#totalAmount').text(integerTotal);
+            // var integerTotal = parseInt(total);
+            $('#totalAmount').text(total);
         }
     });
 </script>
@@ -262,9 +262,8 @@
                 total += amount;
             }
         });
-        var integerTotal = parseInt(total);
-        $('#totalAmount').text(integerTotal);
-        $('#totalAmountInput').val(total.toFixed(2));
+        $('#totalAmount').text(total);
+        $('#totalAmountInput').val(total);
     }
 
     $(document).ready(function() {
@@ -274,7 +273,7 @@
         });
 
         $('form').on('submit', function() {
-            updateTotalAmount(); // Ensure the total amount is up-to-date before submitting
+            updateTotalAmount();
         });
     });
 </script>

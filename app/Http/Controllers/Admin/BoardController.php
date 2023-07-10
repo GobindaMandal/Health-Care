@@ -38,7 +38,7 @@ class BoardController extends Controller
      */
     public function index()
     {
-        $boards_application = Application_Form::where('allowed_amount', '!=', null)
+        $boards_application = Application_Form::where('status', '=', 'management_approved')
         ->orderByDesc('id')
         ->get();
         return view('boards_application.index', compact('boards_application'));
@@ -156,7 +156,8 @@ class BoardController extends Controller
 
     public function report()
     {
-        $reports = Application_Form::whereNotNull('approved_amount')
+        $reports = Application_Form::where('status', '=', 'approved')
+        ->whereNotNull('approved_amount')
         ->whereNotNull('allowed_amount')
         ->get();
         $applicant_reason = Applicant_Reason::all();
@@ -168,75 +169,45 @@ class BoardController extends Controller
     public function filterData(Request $request){
 
         $reports1 = Application_Form::query();
-        $reports2 = Daughter_Marriage::query();
-        $reports3 = Meritocracy::query();
-        $reports4 = Deadbody::query();
-        $reports5 = Patient_Form::query();
-        $application_form = Application_Form::all();
         $applicant_reason = Applicant_Reason::all();
         $help_type = Help_type::all();
         $treatment_type = Treatment_type::all();
 
-        $application_type = $request->application_type;
+        if($request->year == null){
+            $currentYear = date('Y');
+            $startYear = $currentYear - 1;
+            $endYear = $currentYear;
+            $fiscalYear = $startYear . '-' . $endYear;
+            $year = $fiscalYear;
+        } else{
+            $year = $request->input('year');
+        }
+        $yearRange = explode('-', $year);
+        $startDate = $yearRange[0].'-07-01';
+        $endDate = $yearRange[1].'-06-30';
 
-        if($request->has('application_type')){
-            $reports1->where('applicant_reason', $request->input('application_type'));
+        if(!empty($request->ERP_number)){
+            $reports1->where('ERP_number', $request->input('ERP_number'));
         }
-
-        $applications = '';
-        if($request->help_type == "মেয়ের বিবাহ"){
-            $applications =  $reports2->paginate();
+        if(!empty($request->applicant_reason)){
+            $reports1->where('applicant_reason', $request->input('applicant_reason'));
         }
-        if($request->help_type == "মেধাবৃত্তি"){
-            $applications = $reports3->paginate();
+        if(!empty($request->help_type)){
+            $reports1->where('application_type', $request->input('help_type'));
         }
-        if($request->help_type == "লাশ পরিবহন ও দাফন-কাফন"){
-            $applications = $reports4->paginate();
+        if(!empty($request->treatment_type)){
+            $reports1->where('application_type', $request->input('treatment_type'));
         }
-        $ids =[];
-        if (is_array($applications) || is_object($applications)){
-            foreach($applications as $application){   
-                $ids[] = $application->application_id;
-            }
-        }
-        if(!empty($ids)){
-            $reports1->whereIn('id', $ids);
+        if(!empty($request->year)){
+            $reports1->whereBetween('created_at', [$startDate, $endDate]);
         }
         
-
-        if(!empty($request->search_date)){
-            $reports1->where('meeting_date', $request->input('search_date'));
-        }
-        
-        $reports = $reports1->whereNotNull('approved_amount')
+        $reports = $reports1->where('status', '=', 'approved')
+        ->whereNotNull('approved_amount')
         ->whereNotNull('allowed_amount')
         ->get();
 
-        if($application_type == "চিকিৎসা" && $request->treatment_type == "শল্য চিকিৎসা"){
-            $reports1->where('applicant_reason', $request->input('application_type'));
-            return view('boards_application.reports.surgery', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type == "চিকিৎসা" && $request->treatment_type == "জটিল, দূরারোগ্য ও ব্যয়বহুল রোগের চিকিৎসা"){
-            $reports1->where('applicant_reason', $request->input('application_type'));
-            return view('boards_application.reports.complex_disease', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type == "চিকিৎসা" && $request->treatment_type == "সন্তান প্রসব"){
-            return view('boards_application.reports.child_birth', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type == "চিকিৎসা" && $request->treatment_type == "দূর্ঘটনা"){
-            return view('boards_application.reports.accident', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type == "চিকিৎসা"){
-            $reports1->where('applicant_reason', $request->input('application_type'));
-            return view('boards_application.reports.treatment', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type === 'কল্যাণ ও চিত্তবিনোদন'){
-            return view('boards_application.reports.welfare', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        else{
-            $reports = Application_Form::whereNotNull('approved_amount')->get();
-            return view('boards_application.reports.index', compact('reports','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
+        return view("boards_application.reports.filtered_data", compact('reports', 'applicant_reason', 'help_type', 'treatment_type'));
     }
 
     public function reportView($id)

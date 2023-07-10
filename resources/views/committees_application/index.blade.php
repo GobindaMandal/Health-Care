@@ -1,11 +1,6 @@
 <x-app-layout>
   <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
       <div class="container mx-auto px-6 py-2">
-          <div class="text-right">
-            @can('Committees application create')
-              <a href="{{route('admin.committeesApplication.create')}}" class="underline bg-blue-500 text-white font-bold px-5 py-1 rounded focus:outline-none shadow hover:bg-blue-500 transition-colors ">New committees application</a>
-            @endcan
-          </div>
 
         <div class="p-3 bg-white shadow-md rounded my-6">
           <table id="dataTable" class="table table-bordered text-left w-full border-collapse">
@@ -32,24 +27,19 @@
                   <td class="align-middle text-center text-sm">{{ $application->employee_name }}</td>
                   <td class="align-middle text-center text-sm">{{ $application->ERP_number }}</td>
                   <td class="align-middle text-center text-sm">{{ $application->applicant_reason }}</td>
-                  @foreach($application->patientForm as $patientForm)
-                  <td class="align-middle text-center text-sm">{{ $patientForm->treatment_type }}</td>
-                  @endforeach
+                  <td class="align-middle text-center text-sm">{{ $application->application_type }}</td>
+                  @if(isset($application->claim_amount))
+                  <td class="align-middle text-center text-sm">{{ $application->claim_amount }}</td>
+                  @endif
                   @foreach($application->daughterMarriage as $daughterMarriage)
-                  <td class="align-middle text-center text-sm">{{ $daughterMarriage->help_type }}</td>
                   <td class="align-middle text-center text-sm">{{ $daughterMarriage->amount }}</td>
                   @endforeach
                   @foreach($application->meritocracy as $meritocracy)
-                  <td class="align-middle text-center text-sm">{{ $meritocracy->help_type }}</td>
                   <td class="align-middle text-center text-sm">{{ $meritocracy->amount }}</td>
                   @endforeach
                   @foreach($application->deadbody as $deadbody)
-                  <td class="align-middle text-center text-sm">{{ $deadbody->help_type }}</td>
                   <td class="align-middle text-center text-sm">{{ $deadbody->amount }}</td>
                   @endforeach
-                  @if(!$application->healthIssue->isEmpty())
-                  <td class="align-middle text-center text-sm">{{ $application->healthIssue->sum('amount') }}</td>
-                  @endif
                   <td class="align-middle text-center text-sm">
                       @if($application->status=='controller_approved')
                       <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-gray-500 rounded-full">Draft</span>

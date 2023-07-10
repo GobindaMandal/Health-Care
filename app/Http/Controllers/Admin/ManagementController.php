@@ -51,19 +51,19 @@ class ManagementController extends Controller
         ->where('status', '=', 'committee_approved')
         ->orderByDesc('id');
         
-        $applicant_reason = Applicant_Reason::all();
+        $applicant_reasons = Applicant_Reason::all();
 
-        $application_type = $request->application_type;
+        $applicant_reason = $request->applicant_reason;
 
-        if($request->has('application_type')){
-            $managements_application1->where('applicant_reason', $request->input('application_type'));
+        if($request->has('applicant_reason')){
+            $managements_application1->where('applicant_reason', $request->input('applicant_reason'));
         }
         $managements_application = $managements_application1->get();
 
-        if($application_type === 'চিকিৎসা'){
-            return view('managements_application.treatment', compact('managements_application','applicant_reason'));
-        }elseif($application_type === 'কল্যাণ ও চিত্তবিনোদন'){
-            return view('managements_application.welfare', compact('managements_application','applicant_reason'));
+        if($applicant_reason === 'চিকিৎসা'){
+            return view('managements_application.treatment', compact('managements_application','applicant_reasons'));
+        }elseif($applicant_reason === 'কল্যাণ ও চিত্তবিনোদন'){
+            return view('managements_application.welfare', compact('managements_application','applicant_reasons'));
         }else{
             return redirect()->route("managementsApplication");
         }
@@ -188,44 +188,37 @@ class ManagementController extends Controller
     public function filterData(Request $request){
 
         $reports1 = Application_Form::query();
-        $reports2 = Daughter_Marriage::query();
-        $reports3 = Meritocracy::query();
-        $reports4 = Deadbody::query();
-        $reports5 = Patient_Form::query();
-        $application_form = Application_Form::all();
         $applicant_reason = Applicant_Reason::all();
         $help_type = Help_type::all();
         $treatment_type = Treatment_type::all();
 
-        $application_type = $request->application_type;
+        if($request->year == null){
+            $currentYear = date('Y');
+            $startYear = $currentYear - 1;
+            $endYear = $currentYear;
+            $fiscalYear = $startYear . '-' . $endYear;
+            $year = $fiscalYear;
+        } else{
+            $year = $request->input('year');
+        }
+        $yearRange = explode('-', $year);
+        $startDate = $yearRange[0].'-07-01';
+        $endDate = $yearRange[1].'-06-30';
 
-        if($request->has('application_type')){
-            $reports1->where('applicant_reason', $request->input('application_type'));
+        if(!empty($request->ERP_number)){
+            $reports1->where('ERP_number', $request->input('ERP_number'));
         }
-
-        $applications = '';
-        if($request->help_type == "মেয়ের বিবাহ"){
-            $applications =  $reports2->paginate();
+        if(!empty($request->applicant_reason)){
+            $reports1->where('applicant_reason', $request->input('applicant_reason'));
         }
-        if($request->help_type == "মেধাবৃত্তি"){
-            $applications = $reports3->paginate();
+        if(!empty($request->help_type)){
+            $reports1->where('application_type', $request->input('help_type'));
         }
-        if($request->help_type == "লাশ পরিবহন ও দাফন-কাফন"){
-            $applications = $reports4->paginate();
+        if(!empty($request->treatment_type)){
+            $reports1->where('application_type', $request->input('treatment_type'));
         }
-        $ids =[];
-        if (is_array($applications) || is_object($applications)){
-            foreach($applications as $application){   
-                $ids[] = $application->application_id;
-            }
-        }
-        if(!empty($ids)){
-            $reports1->whereIn('id', $ids);
-        }
-        
-
-        if(!empty($request->search_date)){
-            $reports1->where('meeting_date', $request->input('search_date'));
+        if(!empty($request->year)){
+            $reports1->whereBetween('created_at', [$startDate, $endDate]);
         }
         
         $reports = $reports1->where('status', '!=', 'draft')
@@ -238,36 +231,7 @@ class ManagementController extends Controller
         ->where('status', '!=', 'committee_approved')
         ->get();
 
-        if($application_type == "চিকিৎসা" && $request->treatment_type == "শল্য চিকিৎসা"){
-            return view('managements_application.reports.surgery', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type == "চিকিৎসা" && $request->treatment_type == "জটিল, দূরারোগ্য ও ব্যয়বহুল রোগের চিকিৎসা"){
-            return view('managements_application.reports.complex_disease', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type == "চিকিৎসা" && $request->treatment_type == "সন্তান প্রসব"){
-            return view('managements_application.reports.child_birth', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type == "চিকিৎসা" && $request->treatment_type == "দূর্ঘটনা"){
-            return view('managements_application.reports.accident', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type == "চিকিৎসা"){
-            return view('managements_application.reports.treatment', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        elseif($application_type === 'কল্যাণ ও চিত্তবিনোদন'){
-            return view('managements_application.reports.welfare', compact('reports','reports2','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
-        else{
-            $reports = Application_Form::where('status', '!=', 'draft')
-            ->where('status', '!=', 'admin_approved')
-            ->where('status', '!=', 'doctor_approved')
-            ->where('status', '!=', 'doctor_rejected')
-            ->where('status', '!=', 'controller_approved')
-            ->where('status', '!=', 'controller_rejected')
-            ->where('status', '!=', 'committee_rejected')
-            ->where('status', '!=', 'committee_approved')
-            ->get();
-            return view('managements_application.reports.index', compact('reports','application_type','application_form','applicant_reason','help_type','treatment_type'));
-        }
+        return view("managements_application.reports.filtered_data", compact('reports', 'applicant_reason', 'help_type', 'treatment_type'));
     }
 
     public function reportView($id)

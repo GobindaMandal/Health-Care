@@ -1,11 +1,6 @@
 <x-app-layout>
   <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
       <div class="container mx-auto px-6 py-2">
-          <div class="text-right">
-            @can('Boards application create')
-              <a href="{{route('admin.boardsApplication.create')}}" class="underline bg-blue-500 text-white font-bold px-5 py-1 rounded focus:outline-none shadow hover:bg-blue-500 transition-colors ">New boards application</a>
-            @endcan
-          </div>
 
         <div class="p-3 bg-white shadow-md rounded my-6">
           <form action="{{ route('update.boardAmount') }}" method="POST">
@@ -21,6 +16,7 @@
                 <th class="align-middle text-center text-sm">দাখিলকৃত ও পরীক্ষান্তে বিলের পরিমাণ</th>
                 <th class="align-middle text-center text-sm">সুপারিশকৃত অনুদানের পরিমান</th>
                 <th class="align-middle text-center text-sm">অনুমোদিত অনুদানের পরিমান</th>
+                <th class="align-middle text-center text-sm">স্ট্যাটাস</th>
                 <th class="align-middle text-center text-sm w-2/12">অ্যাকশন</th>
               </tr>
             </thead>
@@ -44,6 +40,13 @@
                       <input class="text-sm form-control" type="text" id="approved_amount" name="approved_amount[{{ $loop->index }}]" placeholder="amount" value="{{ $application->approved_amount }}" @if ($application->approved_amount) readonly @endif>
                   </td>
 
+                  <td class="align-middle text-center text-sm">
+                    @if($application->status=='management_approved')
+                    <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-gray-500 rounded-full">Draft</span>
+                    @else
+                    <span class="text-white inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-white bg-green-500 rounded-full">Approved</span>
+                    @endif
+                  </td>
                   <td class="align-middle text-center text-sm text-center">
                     <button type="submit" class="btn btn-primary btn-sm mr-2">Save</button>
                     @can('Boards application edit')
